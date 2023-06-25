@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   
+<mapper namespace="net.musecom.database.blogMapper">
+
+   <select id="blogCount" resultType="Integer">
+       SELECT count(*) FROM blog
+   </select>
+
+   <select id="blogView" parameterType="Integer" resultType="net.musecom.database.BlogDto">
+       SELECT * FROM blog WHERE num=#{num}
+   </select>
+   
+   <select id="blogList" resultType="net.musecom.database.BlogDto" parameterType="net.musecom.util.Pagination">
+       SELECT * FROM blog ORDER BY num DESC LIMIT #{startList}, #{listSize}
+   </select>
+   
+   <insert id="blogInsert" parameterType="net.musecom.database.BlogDto" useGeneratedKeys="true" keyProperty="num">
+       INSERT INTO blog (title, content, imgct, writer, categorya, categoryb, imname)
+       VALUES (#{title}, #{content}, #{imgct}, #{writer}, #{categorya}, #{categoryb}, #{imname})
+   </insert>
+   
+   <insert id="insertFile" parameterType="net.musecom.database.FileDto" useGeneratedKeys="true" keyProperty="num">
+      INSERT INTO blog_img (blog_num, oldname, newname, ext, filesize, imname) 
+      VALUES (#{blog_num}, #{oldname} , #{newname}, #{ext}, #{filesize}, #{imname} )
+   </insert>
+   
+   <update id="blogUpdate" parameterType="net.musecom.database.BlogDto">
+       UPDATE blog SET 
+          title=#{title}, content=#{content}, imgct=#{imgct}, writer=#{writer}, categorya=#{categorya}, categoryb=#{categoryb}
+       WHERE num=#{num}   
+   </update>
+      
+   <delete id="blogDelete" parameterType="Integer">
+       DELETE FROM blog WHERE num=#{num}
+   </delete>
+   
+   
+</mapper>   
+    
+    
